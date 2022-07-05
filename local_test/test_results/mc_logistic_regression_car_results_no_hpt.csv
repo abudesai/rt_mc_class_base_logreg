@@ -1,0 +1,2 @@
+model,dataset_name,run_hpt,num_hpt_trials,accuracy,f1_score,precision,recall,auc_score,elapsed_time_in_minutes
+mc_logistic_regression,car,False,,0.8382,0.8423,0.8861,0.8382,0.9544,0.79

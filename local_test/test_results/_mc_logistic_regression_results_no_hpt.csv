@@ -1,0 +1,7 @@
+model,dataset_name,run_hpt,num_hpt_trials,accuracy,f1_score,precision,recall,auc_score,elapsed_time_in_minutes
+mc_logistic_regression,car,False,,0.8382,0.8423,0.8861,0.8382,0.9544,0.79
+mc_logistic_regression,primary_tumor,False,,0.5294,0.497,0.5235,0.5294,0.8515,0.56
+mc_logistic_regression,splice,False,,0.9467,0.9473,0.9487,0.9467,0.9938,0.65
+mc_logistic_regression,statlog,False,,0.8509,0.8532,0.8573,0.8509,0.9712,0.98
+mc_logistic_regression,steel_plate_fault,False,,0.6718,0.6604,0.6788,0.6718,0.906,0.81
+mc_logistic_regression,wine,False,,0.9722,0.9723,0.9744,0.9722,1.0,0.27

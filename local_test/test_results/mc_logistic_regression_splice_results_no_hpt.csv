@@ -1,0 +1,2 @@
+model,dataset_name,run_hpt,num_hpt_trials,accuracy,f1_score,precision,recall,auc_score,elapsed_time_in_minutes
+mc_logistic_regression,splice,False,,0.9467,0.9473,0.9487,0.9467,0.9938,0.65

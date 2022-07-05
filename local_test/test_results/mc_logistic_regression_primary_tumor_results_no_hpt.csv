@@ -1,0 +1,2 @@
+model,dataset_name,run_hpt,num_hpt_trials,accuracy,f1_score,precision,recall,auc_score,elapsed_time_in_minutes
+mc_logistic_regression,primary_tumor,False,,0.5294,0.497,0.5235,0.5294,0.8515,0.56
