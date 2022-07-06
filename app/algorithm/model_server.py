@@ -3,7 +3,7 @@ import os, sys
 
 import algorithm.utils as utils
 import algorithm.preprocessing.pipeline as pipeline
-import algorithm.model.logistic_regression as logistic_regression
+import algorithm.model.mc_classifier as mc_classifier
 
 
 # get model configuration parameters 
@@ -30,7 +30,7 @@ class ModelServer:
     def _get_model(self): 
         if self.model is None: 
             try: 
-                self.model = logistic_regression.load_model(self.model_path)
+                self.model = mc_classifier.load_model(self.model_path)
                 return self.model
             except: 
                 print(f'Could not load model from {self.model_path}. Did you train the model first?')

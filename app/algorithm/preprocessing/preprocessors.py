@@ -342,11 +342,6 @@ class TargetOneHotEncoder(BaseEstimator, TransformerMixin):
         transformed_data.columns =  list(data.columns) + self.col_names
         return transformed_data
     
-    def inverse_transform(self, preds): 
-        sys.exit()
-        inv_preds = self.ohe.inverse_transform(preds)
-        return inv_preds
-    
 
 class XYSplitter(BaseEstimator, TransformerMixin): 
     def __init__(self, target_col, id_col):

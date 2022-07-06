@@ -11,7 +11,7 @@ import algorithm.model_trainer as model_trainer
 import algorithm.model_server as model_server
 import algorithm.model_tuner as model_tuner
 import algorithm.preprocessing.pipeline as pipeline
-import algorithm.model.logistic_regression as logistic_regression
+import algorithm.model.mc_classifier as mc_classifier
 
 
 inputs_path = "./ml_vol/inputs/"
@@ -43,7 +43,7 @@ from requirements.txt file, and then use that virtual env to do your testing.
 This isnt foolproof. You can still have host os, or python-version related issues, so beware.
 '''
 
-model_name = "mc_logistic_regression"
+model_name = mc_classifier.MODEL_NAME
 
 def create_ml_vol():    
     dir_tree = {
@@ -117,9 +117,9 @@ def train_and_save_algo():
     # Save the processing pipeline   
     pipeline.save_preprocessor(preprocessor, model_artifacts_path)
     # Save the model 
-    logistic_regression.save_model(model, model_artifacts_path)
+    mc_classifier.save_model(model, model_artifacts_path)
     # Save training history
-    logistic_regression.save_training_history(history, model_artifacts_path)    
+    mc_classifier.save_training_history(history, model_artifacts_path)    
     print("done with training")
 
 
@@ -248,7 +248,7 @@ if __name__ == "__main__":
     run_hpt_list = [False]
     
     datasets = ["car", "primary_tumor", "splice", "statlog", "steel_plate_fault", "wine"]
-    # datasets = ["primary_tumor"]
+    datasets = ["wine"]
     
     for run_hpt in run_hpt_list:
         all_results = []
