@@ -1,2 +1,2 @@
 model,dataset_name,run_hpt,num_hpt_trials,accuracy,f1_score,precision,recall,auc_score,elapsed_time_in_minutes
-MC_LogisticRegression,wine,False,,0.9722,0.9723,0.9744,0.9722,1.0,0.3
+MC_LogisticRegression,wine,False,,0.9722,0.9723,0.9744,0.9722,1.0,0.29
