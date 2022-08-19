@@ -13,7 +13,7 @@ from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.regularizers import l2, l1_l2
 from tensorflow.keras.optimizers import SGD, Adam
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, Callback
-from tensorflow.keras.losses import CategoricalCrossentropy
+from tensorflow.keras.losses import CategoricalCrossentropy, SparseCategoricalCrossentropy
 
 
 
@@ -44,7 +44,7 @@ class Classifier():
         
         self.net = self.build_model()
         self.net.compile(
-            loss=CategoricalCrossentropy(),
+            loss=SparseCategoricalCrossentropy(),
             # optimizer=Adam(learning_rate=self.lr),
             optimizer=SGD(learning_rate=self.lr),
             metrics=['accuracy'],
@@ -149,4 +149,4 @@ def get_data_based_model_params(X, y):
         Set any model parameters that are data dependent. 
         For example, number of layers or neurons in a neural network as a function of data shape.
     '''  
-    return {"D": X.shape[1], "K": y.shape[1]}
+    return {"D": X.shape[1], "K": len(set(y))}

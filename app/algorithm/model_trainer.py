@@ -2,8 +2,7 @@
 
 import os, warnings, sys
 import pprint
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # or any {'0', '1', '2'}
-warnings.filterwarnings('ignore') 
+warnings.filterwarnings('ignore')  
 
 import numpy as np, pandas as pd
 from sklearn.model_selection import KFold, train_test_split
@@ -23,7 +22,7 @@ model_cfg = get_model_config()
 def get_trained_model(data, data_schema, hyper_params):  
     
     # set random seeds
-    utils.set_seeds()    
+    utils.set_seeds()
     
     # perform train/valid split 
     train_data, valid_data = train_test_split(data, test_size=model_cfg['valid_split'])
@@ -31,14 +30,16 @@ def get_trained_model(data, data_schema, hyper_params):
     
     # preprocess data
     print("Pre-processing data...")
-    train_data, valid_data, preprocess_pipe = preprocess_data(train_data, valid_data, data_schema)            
-    train_X, valid_X = train_data['X'].astype(np.float), valid_data['X'].astype(np.float) 
-    train_y, valid_y = train_data['y'], valid_data['y'] 
+    train_data, valid_data, preprocess_pipe = preprocess_data(train_data, valid_data, data_schema)       
+    train_X, train_y = train_data['X'].astype(np.float), train_data['y']
+    valid_X, valid_y = valid_data['X'].astype(np.float), valid_data['y']
+    # print(train_X.shape, train_y.shape, valid_X.shape, valid_y.shape)
     
     # balance the targetclasses  
     train_X, train_y = get_resampled_data(train_X, train_y)
     valid_X, valid_y = get_resampled_data(valid_X, valid_y)
-        
+    # print(train_X.shape, train_y.shape, valid_X.shape, valid_y.shape)
+    
     # Create and train model     
     print('Fitting model ...')  
     model, history = train_model(train_X, train_y, valid_X, valid_y, hyper_params)    
@@ -61,6 +62,7 @@ def train_model(train_X, train_y, valid_X, valid_y, hyper_params):
         epochs = 1000,
         verbose = 0, 
     )  
+    # print(history[-10:]); sys.exit()
     # print("last_loss:", history.history['loss'][-1])
     return model, history
 
@@ -68,7 +70,7 @@ def train_model(train_X, train_y, valid_X, valid_y, hyper_params):
 def preprocess_data(train_data, valid_data, data_schema):
     # print('Preprocessing train_data of shape...', train_data.shape)
     pp_params = pp_utils.get_preprocess_params(train_data, data_schema, model_cfg) 
-    
+        
     # we want to get target_classes from both train and validation date. otherwise, we might
     # have a case where some target class was only observed in validation data. 
     pp_params["target_classes"] = pp_utils.get_target_classes(
@@ -84,7 +86,6 @@ def preprocess_data(train_data, valid_data, data_schema):
 
 
 def get_resampled_data(X, y):    
-    
     # if some minority class is observed only 1 time, and a majority class is observed 100 times
     # we dont over-sample the minority class 100 times. We have a limit of how many times
     # we sample. max_resample is that parameter - it represents max number of full population
@@ -92,34 +93,37 @@ def get_resampled_data(X, y):
     # repeat the minority class 2 times over (plus original 1 time). 
     max_resample = model_cfg["max_resample_of_minority_classes"]
     
-    class_count = list(y.sum(axis=0))
-    max_obs_count = max(class_count)
+    # class_count = list(y.sum(axis=0))
+    class_counts = np.asarray(np.unique(y, return_counts=True)).T
+    max_obs_count = max(class_counts[:, 1])
     
     resampled_X, resampled_y = [], []
-    for i, count in enumerate(class_count):
+    for i, count in list(class_counts):
         count = int(count)
         if count == 0: continue
         # find total num_samples to use for this class
         size = max_obs_count if max_obs_count / count < max_resample else count * max_resample
         size = int(size)
+        # print(i, count, size)
         # if observed class is 50 samples, and we need 125 samples for this class, 
         # then we take the original samples 2 times (equalling 100 samples), and then randomly draw
         # the other 25 samples from among the 50 samples
         full_samples = size // count
-        idx = y[:, i] == 1
+        idx = y == i
         for _ in range(full_samples):
             resampled_X.append(X[idx, :])
             resampled_y.append(y[idx])
+            
         # find the remaining samples to draw randomly
         remaining =  int(size - count * full_samples   )
         sampled_idx = np.random.randint(count, size=remaining)
         resampled_X.append(X[idx, :][sampled_idx, :])
-        resampled_y.append(y[idx][sampled_idx, :])
-        # print(i, count, size)
+        resampled_y.append(y[idx][sampled_idx])
         
     resampled_X = np.concatenate(resampled_X, axis=0)
     resampled_y = np.concatenate(resampled_y, axis=0)
     # print(resampled_X.shape, resampled_y.shape)
     # shuffle the arrays
     resampled_X, resampled_y = shuffle(resampled_X, resampled_y)
+    
     return resampled_X, resampled_y
