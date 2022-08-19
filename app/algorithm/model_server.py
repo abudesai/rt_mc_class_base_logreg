@@ -61,7 +61,7 @@ class ModelServer:
         class_names = pipeline.get_class_names(self.preprocessor, model_cfg)        
         # get the name for the id field
         id_field_name = data_schema["inputDatasets"]["multiClassClassificationBaseMainInput"]["idField"]  
-        # return te prediction df with the id and class probability fields
+        # return the prediction df with the id and class probability fields
         
         preds_df = pd.concat( [ data[[id_field_name]].copy(), pd.DataFrame(preds, columns = class_names)], axis=1 )
         return preds_df

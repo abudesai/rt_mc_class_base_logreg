@@ -20,7 +20,7 @@ from tensorflow.keras.losses import CategoricalCrossentropy
 model_params_fname = "model_params.save"
 model_wts_fname = "model_wts.save"
 history_fname = "history.json"
-MODEL_NAME = "MC_LogisticRegression"
+MODEL_NAME = "mc_logistic_regression_tfkeras"
 
 COST_THRESHOLD = float('inf')
 

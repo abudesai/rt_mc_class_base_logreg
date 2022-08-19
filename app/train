@@ -10,9 +10,9 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # or any {'0', '1', '2'}
 import algorithm.utils as utils
 import algorithm.model_trainer as model_trainer
 import algorithm.preprocessing.pipeline as pipeline
-import algorithm.model.logistic_regression as logistic_regression
+import algorithm.model.mc_classifier as mc_classifier
 
-# These are the paths to where SageMaker mounts interesting things in your container.
+# Paths for inputs, model, outputs for ml_vol mounted to the container.
 prefix = '/opt/ml_vol/'
 data_path = os.path.join(prefix, 'inputs', 'data')
 data_schema_path = os.path.join(prefix, 'inputs', 'data_config')
@@ -43,9 +43,9 @@ def train():
         # Save the processing pipeline   
         pipeline.save_preprocessor(preprocessor, model_path)
         # Save the model 
-        logistic_regression.save_model(model, model_path)
+        mc_classifier.save_model(model, model_path)
         # Save the history 
-        logistic_regression.save_training_history(history, model_path)           
+        mc_classifier.save_training_history(history, model_path)           
         print('Done training.')
     except Exception as e:
         print("error!")

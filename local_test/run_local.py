@@ -35,6 +35,10 @@ test_results_path = "test_results"
 if not os.path.exists(test_results_path): os.mkdir(test_results_path)
 
 
+# change this to whereever you placed your local testing datasets
+local_datapath = "./../../datasets" 
+
+
 '''
 this script is useful for doing the algorithm testing locally without needing 
 to build the docker image and run the container.
@@ -85,11 +89,11 @@ def create_ml_vol():
 
 def copy_example_files(dataset_name):     
     # data schema
-    shutil.copyfile(f"./examples/{dataset_name}_schema.json", os.path.join(data_schema_path, f"{dataset_name}_schema.json"))
+    shutil.copyfile(f"{local_datapath}/{dataset_name}/{dataset_name}_schema.json", os.path.join(data_schema_path, f"{dataset_name}_schema.json"))
     # train data    
-    shutil.copyfile(f"./examples/{dataset_name}_train.csv", os.path.join(train_data_path, f"{dataset_name}_train.csv"))    
+    shutil.copyfile(f"{local_datapath}/{dataset_name}/{dataset_name}_train.csv", os.path.join(train_data_path, f"{dataset_name}_train.csv"))    
     # test data     
-    shutil.copyfile(f"./examples/{dataset_name}_test.csv", os.path.join(test_data_path, f"{dataset_name}_test.csv"))    
+    shutil.copyfile(f"{local_datapath}/{dataset_name}/{dataset_name}_test.csv", os.path.join(test_data_path, f"{dataset_name}_test.csv"))    
     # hyperparameters
     shutil.copyfile("./examples/hyperparameters.json", os.path.join(hyper_param_path, "hyperparameters.json"))
 
@@ -201,7 +205,7 @@ def save_test_outputs(results, run_hpt, dataset_name):
     df = df[["model", "dataset_name", "run_hpt", "num_hpt_trials", 
              "accuracy", "f1_score", "precision", "recall", "auc_score",
              "elapsed_time_in_minutes"]]
-    
+    print(df)
     file_path_and_name = get_file_path_and_name(run_hpt, dataset_name)
     df.to_csv(file_path_and_name, index=False)
     
@@ -245,11 +249,10 @@ if __name__ == "__main__":
     
     num_hpt_trials = 10
     run_hpt_list = [False, True]
-    run_hpt_list = [False]
+    run_hpt_list = [True]
     
     datasets = ["car", "primary_tumor", "splice", "statlog", "steel_plate_fault", "wine"]
-    datasets = ["wine"]
-    
+    datasets = ["car"]
     for run_hpt in run_hpt_list:
         all_results = []
         for dataset_name in datasets:        
