@@ -103,8 +103,7 @@ def tune_hyperparameters(data, data_schema, num_trials, hyper_param_path, hpt_re
     
     # get the hpt space (grid) and default hps
     hpt_space = get_hpt_space(hpt_specs)  
-    default_hps = get_default_hps(hpt_specs)  
-             
+    default_hps = get_default_hps(hpt_specs)               
     
     # Scikit-optimize objective function
     @use_named_args(hpt_space)

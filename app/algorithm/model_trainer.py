@@ -62,8 +62,6 @@ def train_model(train_X, train_y, valid_X, valid_y, hyper_params):
         epochs = 1000,
         verbose = 0, 
     )  
-    # print(history[-10:]); sys.exit()
-    # print("last_loss:", history.history['loss'][-1])
     return model, history
 
 

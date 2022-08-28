@@ -20,7 +20,7 @@ from tensorflow.keras.losses import CategoricalCrossentropy, SparseCategoricalCr
 model_params_fname = "model_params.save"
 model_wts_fname = "model_wts.save"
 history_fname = "history.json"
-MODEL_NAME = "mc_logistic_regression_tfkeras"
+MODEL_NAME = "multi_class_base_logistic_regression_tfkeras"
 
 COST_THRESHOLD = float('inf')
 
@@ -35,7 +35,7 @@ class InfCostStopCallback(Callback):
 
 class Classifier(): 
     
-    def __init__(self, D, K, l1_reg=1e-3, l2_reg=1e-3, lr = 1e-2, **kwargs) -> None:        
+    def __init__(self, D, K, l1_reg=1e-3, l2_reg=1e-1, lr = 1e-3, **kwargs) -> None:        
         self.D = D      
         self.K = K
         self.l1_reg = np.float(l1_reg)
