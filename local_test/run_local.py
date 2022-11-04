@@ -241,8 +241,10 @@ if __name__ == "__main__":
     run_hpt_list = [False, True]
     run_hpt_list = [False]
     
-    datasets = ["car", "primary_tumor", "splice", "statlog", "steel_plate_fault", "wine"]
-    # datasets = ["car"]
+    datasets = ["dna_splice_junction", "gesture_phase", "ipums_census_small", "landsat_satellite", "page_blocks", 
+                "primary_tumor", "soybean_disease", "spotify_genre", "steel_plate_fault", "vehicle_silhouettes"]
+    # datasets = ["primary_tumor"]
+    
     for run_hpt in run_hpt_list:
         all_results = []
         for dataset_name in datasets:        
