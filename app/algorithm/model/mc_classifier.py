@@ -45,8 +45,8 @@ class Classifier():
         self.net = self.build_model()
         self.net.compile(
             loss=SparseCategoricalCrossentropy(),
-            # optimizer=Adam(learning_rate=self.lr),
-            optimizer=SGD(learning_rate=self.lr),
+            optimizer=Adam(learning_rate=self.lr),
+            # optimizer=SGD(learning_rate=self.lr),
             metrics=['accuracy'],
         )
         
@@ -88,7 +88,7 @@ class Classifier():
         return history
     
     
-    def predict(self, X, verbose=False): 
+    def predict_proba(self, X, verbose=False): 
         preds = self.net.predict(X, verbose=verbose)
         return preds 
     
